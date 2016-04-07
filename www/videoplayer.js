@@ -9,9 +9,9 @@ module.exports = {
         leftV: 0
     },
     
-    start: function (path,options, successCallback, errorCallbcal) {
+    start: function (path, options, successCallback, errorCallback) {
       options = this.merge(this.DEFAULT_OPTIONS, options);  
-        exec(successCallback, errorCallback,"VideoPlayer", "start", [path, options]);
+        exec(successCallback, errorCallback, "VideoPlayer", "start", [path, options]);
     },
     
     play: function (successCallback, errorCallback) {

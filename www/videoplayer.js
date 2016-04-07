@@ -18,7 +18,7 @@ module.exports = {
         exec(successCallback, errorCallback, "VideoPlayer", "play", []);
     },
     
-    preview: function(path, successCallback, errorCallback){
+    preview: function (path, successCallback, errorCallback){
         options = this.merge(this.DEFAULT_OPTIONS, options); 
         exec(successCallback, errorCallback, "VideoPlayer", "preview", [path]);
     },

@@ -7,31 +7,26 @@
     <engines>
         <engine name="cordova" version=">=4.0.0" />
     </engines>
-
+    
     <keywords>video, background, transparent, overlay, recording, camera</keywords>
-    
     <license>GPL3</license>
- 
-    
+
     <js-module name="backgroundvideo" src="www/backgroundvideo.js">
         <clobbers target="cordova.plugins.backgroundvideo" />
     </js-module>
 
     <platform name="android">
-    
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="backgroundvideo">
                 <param name="android-package" value="tw.com.bais.groundvideo.BackgroundVideo"/>
             </feature>
         </config-file>
-
         <!-- add permissions in AndroidManifest.xml file-->
         <config-file target="AndroidManifest.xml" parent="/*">
             <uses-permission android:name="android.permission.INTERNET" />
             <uses-permission android:name="android.permission.RECORD_AUDIO" />
             <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
         </config-file>
-
         <source-file src="src/android/BackgroundVideo.java" target-dir="src/tw/com/bais/groundvideo" />
         <source-file src="src/android/ImageLoadTask.java" target-dir="src/tw/com/bais/groundvideo" />
         <source-file src="src/android/ImageLoadTaskListener.java" target-dir="src/tw/com/bais/groundvideo" />

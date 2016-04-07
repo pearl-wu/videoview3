@@ -30,6 +30,7 @@ public class BackgroundVideo extends CordovaPlugin{
     private static final String TAG = "BACKGROUND_VIDEO";
     private static final String ACTION_START_RECORDING = "start";
     private static final String ACTION_STOP_RECORDING = "stop";
+    private static final String ACTION_PLAY_RECORDING = "play";
     private static final String FILE_EXTENSION = ".mp4";
     private String FILE_PATH = "";
     private String FILE_NAME = "";
@@ -47,28 +48,30 @@ public class BackgroundVideo extends CordovaPlugin{
     public boolean execute(String action, JSONArray args, final CallbackContext callbackContext) throws JSONException {
     	    	
         try {
+        	
             Log.d(TAG, "ACTION: " + action);
 
             if(ACTION_START_RECORDING.equals(action)){
-            	
                 FILE_NAME = args.getString(0);
+                options = args.getJSONObject(1);
+                
+                final int widthV =  options.getInt("widthV");
+                final int heightV =  options.getInt("heightV");
+                final int TOP =  options.getInt("Top");
+                final int LEFT =  options.getInt("Left");
+
                     //Get screen dimensions
-                    DisplayMetrics displaymetrics = new DisplayMetrics();
-                    cordova.getActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-                  
                     cordova.getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            cordova.getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);        
+                           //cordova.getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);        
                             
-                            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(400,400);  
-                            		params.setMargins(300, 300, 0, 0);
+                            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(widthV,heightV);  
+                            params.setMargins(TOP, LEFT, 0, 0);
                             
                             try {
-                            	 Toast.makeText(cordova.getActivity(), "000000000", Toast.LENGTH_SHORT).show();
+                            	
                                     videoww = new VideoView(cordova.getActivity());
-                                    //MediaController controller = new MediaController(getContext());
-                                    //videoww.setMediaController(controller); 
                                     videoww.setVideoURI(Uri.parse(getNextFileName()));
                                     videoww.requestFocus();
                                     videoww.start();
@@ -77,19 +80,8 @@ public class BackgroundVideo extends CordovaPlugin{
                                     videoww.setOnTouchListener(new View.OnTouchListener()
                                     {
                                         @Override
-                                        public boolean onTouch(View v, MotionEvent motionEvent)
-                                        {
-                                            if (videoww.isPlaying())
-                                            {
-                                            	videoww.pause(); 
-                                            	/*try {
-                                            		return playVideo("http://video.ebais.com.tw:8088/fileman/media/MOL7178/trdir/m000000107207200480", options);
-												} catch (JSONException e) {
-													// TODO Auto-generated catch block
-													e.printStackTrace();
-												}*/
-                                            }else{
-                                            	//videoww.start();
+                                        public boolean onTouch(View v, MotionEvent motionEvent){
+                                            if (videoww.isPlaying()){
                                             	
                                             }
                                             return true;
@@ -98,35 +90,51 @@ public class BackgroundVideo extends CordovaPlugin{
                                     
                                     videoww.setOnCompletionListener(new MediaPlayer.OnCompletionListener()
                                     {
-                                     @Override
-                                     public void onCompletion(MediaPlayer mp)
-                                     {
-                                    	 videoww.start();
-                                     }
+                                    	@Override
+	                                     public void onCompletion(MediaPlayer mp)
+	                                     {
+	                                    	 videoww.start();
+	                                     }
                                     });
-                                    
-                                    
-                                    
-                                    
                                     //Toast.makeText(cordova.getActivity(), videoww.isShown()+">>", Toast.LENGTH_SHORT).show();
+                                    
                             } catch(Exception e) {
                                 Log.e(TAG, "Error during preview create", e);
                                 callbackContext.error(TAG + ": " + e.getMessage());
                             }
                         }
                     });
-
                 return true;
             }
 
             if(ACTION_STOP_RECORDING.equals(action)) {
                     cordova.getActivity().runOnUiThread(new Runnable() {
                         @Override
-                        public void run() {}
+                        public void run() {
+                        	if (videoww.isPlaying()){
+                        		videoww.pause();
+                        	}
+                        }
                     });
                 return true;
             }
-
+            
+            if(ACTION_PLAY_RECORDING.equals(action)){
+            	cordova.getActivity().runOnUiThread(new Runnable() {
+            		@Override
+            		public void run(){
+            			try {
+							playVideo(FILE_NAME, options);
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+            		}
+            	});
+            	
+            }
+            
+            
             callbackContext.error(TAG + ": INVALID ACTION");
             return false;
         } catch(Exception e) {

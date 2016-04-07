@@ -12,7 +12,7 @@
     <issue></issue>
    
     <engines>
-        <engine name="cordova" version=">=4.0.0" />
+        <engine name="cordova" version=">=3.0.0" />
     </engines>
 
     <js-module src="www/videoplayer.js" name="VideoPlayer">
@@ -33,9 +33,6 @@
             </feature>
         </config-file>
         <source-file src="src/android/VideoPlayer.java" target-dir="src/com/bais/cordova/video/" />
-		<source-file src="src/android/ImageLoadTask.java" target-dir="src/com/bais/cordova/video/" />
-		<source-file src="src/android/ImageLoadTaskListener.java" target-dir="src/com/bais/cordova/video/" />
-		<source-file src="src/android/VitamioMedia.java" target-dir="src/com/bais/cordova/video/" />
     </platform>
 
 </plugin>

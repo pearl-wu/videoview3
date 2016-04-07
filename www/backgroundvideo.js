@@ -21,7 +21,7 @@ var backgroundvideo = {
         cordova.exec(successFunction, errorFunction, "backgroundvideo","start", [filename, options]);
     }
 	
-    /*stop : function(successFunction, errorFunction) {
+   stop : function(successFunction, errorFunction) {
         cordova.exec(successFunction, errorFunction, "backgroundvideo","stop", []);
     },
 	
@@ -38,7 +38,7 @@ var backgroundvideo = {
             }
         });
         return obj;
-    }*/
+    }
 	
 };
 

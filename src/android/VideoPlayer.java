@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 import android.widget.VideoView;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaArgs;
@@ -25,7 +26,7 @@ import com.hutchind.cordova.plugins.vitamio.VitamioMedia;
 public class VideoPlayer extends CordovaPlugin {
 
     private static final String TAG = "BACKGROUND_VIDEO";
-    private static final String ACTION_START_RECORDING = "start";
+    private static final String ACTION_PREVIEW_RECORDING = "preview";
     private static final String ACTION_STOP_RECORDING = "stop";
     private static final String ACTION_PLAY_RECORDING = "play";
     private static final String FILE_EXTENSION = ".mp4";
@@ -44,20 +45,20 @@ public class VideoPlayer extends CordovaPlugin {
  
     @SuppressLint("RtlHardcoded") 
     public boolean execute(String action, CordovaArgs args, final CallbackContext callbackContext) throws JSONException {
-        
+    	
     	try {
         	
             Log.d(TAG, "ACTION: " + action);
-
-            if(ACTION_START_RECORDING.equals(action)){
+            if(ACTION_PLAY_RECORDING.equals(action)){
+            	Toast.makeText(cordova.getActivity(), "123", Toast.LENGTH_LONG).show();
                 FILE_NAME = args.getString(0);
                 options = args.getJSONObject(1);
                 
-                final int widthV =  options.getInt("widthV");
-                final int heightV =  options.getInt("heightV");
-                final int TOP =  options.getInt("Top");
-                final int LEFT =  options.getInt("Left");
-                
+                final int widthV =  options.getInt("videoWidth");
+                final int heightV =  options.getInt("videoHeight");
+                final int TOP =  options.getInt("videoXx");
+                final int LEFT =  options.getInt("videoYy");
+               
                     //Get screen dimensions
                     cordova.getActivity().runOnUiThread(new Runnable() {
                     	
@@ -118,7 +119,7 @@ public class VideoPlayer extends CordovaPlugin {
                 return true;
             }
             
-            if(ACTION_PLAY_RECORDING.equals(action)){
+            if(ACTION_PREVIEW_RECORDING.equals(action)){
             	cordova.getActivity().runOnUiThread(new Runnable() {
             		@Override
             		public void run(){

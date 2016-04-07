@@ -25,7 +25,7 @@ var backgroundvideo = {
         cordova.exec(successFunction, errorFunction, "backgroundvideo","stop", []);
     },
 	
-	play : function(successFunction, errorFunction) {
+	play : function(filename, options, successFunction, errorFunction) {
 		options = this.merge(this.PALY_OPTIONS, options);
         cordova.exec(successFunction, errorFunction || null, "backgroundvideo","play", [filename, options]);
     },

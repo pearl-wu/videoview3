@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.VideoView;
 import org.apache.cordova.CallbackContext;
@@ -21,14 +22,18 @@ import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import tw.com.bais.video.R;
+
 import com.hutchind.cordova.plugins.vitamio.VitamioMedia;
 
 public class VideoPlayer extends CordovaPlugin {
 
     private static final String TAG = "BACKGROUND_VIDEO";
-    private static final String ACTION_PREVIEW_RECORDING = "preview";
-    private static final String ACTION_STOP_RECORDING = "stop";
     private static final String ACTION_PLAY_RECORDING = "play";
+    private static final String ACTION_START_RECORDING = "start";
+    private static final String ACTION_STOP_RECORDING = "stop";
+    private static final String ACTION_PREVIEW_RECORDING = "preview";    
     private static final String FILE_EXTENSION = ".mp4";
     private String FILE_PATH = "";
     private String FILE_NAME = "";
@@ -49,8 +54,9 @@ public class VideoPlayer extends CordovaPlugin {
     	try {
         	
             Log.d(TAG, "ACTION: " + action);
-            if(ACTION_PLAY_RECORDING.equals(action)){
-            	Toast.makeText(cordova.getActivity(), "123", Toast.LENGTH_LONG).show();
+            
+            if(ACTION_START_RECORDING.equals(action)){
+            	
                 FILE_NAME = args.getString(0);
                 options = args.getJSONObject(1);
                 
@@ -71,33 +77,16 @@ public class VideoPlayer extends CordovaPlugin {
                             
                             try {
                             	
-                                    videoww = new VideoView(cordova.getActivity());
-                                    videoww.setVideoURI(Uri.parse(getNextFileName()));
-                                    videoww.requestFocus();
-                                    videoww.start();
-                                    cordova.getActivity().addContentView(videoww, params);
-                                    
-                                    videoww.setOnTouchListener(new View.OnTouchListener()
-                                    {
-                                        @Override
-                                        public boolean onTouch(View v, MotionEvent motionEvent){
-                                            if (videoww.isPlaying()){
-                                            	
-                                            }
-                                            return true;
-                                        }
-                                    });
-                                    
-                                    videoww.setOnCompletionListener(new MediaPlayer.OnCompletionListener()
-                                    {
-                                    	@Override
-	                                     public void onCompletion(MediaPlayer mp)
-	                                     {
-	                                    	 videoww.start();
-	                                     }
-                                    });
-                                    //Toast.makeText(cordova.getActivity(), videoww.isShown()+">>", Toast.LENGTH_SHORT).show();
-                                    
+                            	 videoww = new VideoView(cordova.getActivity());
+                                 videoww.setVideoURI(Uri.parse(getNextFileName()));
+                                 videoww.requestFocus();
+                                   //Toast.makeText(cordova.getActivity(), videoww.isShown()+">>>", Toast.LENGTH_LONG).show();
+                                 cordova.getActivity().addContentView(videoww, params);
+                                 
+	                             //ImageView image = new ImageView(cordova.getActivity());
+	                             //image.setImageDrawable(cordova.getActivity().getResources().getDrawable(R.drawable.image));
+	                             //cordova.getActivity().addContentView(image, params);
+
                             } catch(Exception e) {
                                 Log.e(TAG, "Error during preview create", e);
                                 callbackContext.error(TAG + ": " + e.getMessage());
@@ -106,6 +95,22 @@ public class VideoPlayer extends CordovaPlugin {
                     });
                 return true;
             }
+            
+            if(ACTION_PLAY_RECORDING.equals(action)){
+            	
+            	 videoww.start();
+    			 videoww.setOnCompletionListener(new MediaPlayer.OnCompletionListener()
+                 {
+                 	@Override
+                      public void onCompletion(MediaPlayer mp)
+                      {
+                     	 videoww.start();
+                      }
+                 });           	
+            	
+            	return true;
+            }
+            
 
             if(ACTION_STOP_RECORDING.equals(action)) {
                     cordova.getActivity().runOnUiThread(new Runnable() {
@@ -123,18 +128,19 @@ public class VideoPlayer extends CordovaPlugin {
             	cordova.getActivity().runOnUiThread(new Runnable() {
             		@Override
             		public void run(){
+            			
             			/*try {
 							playVideo(FILE_NAME, options);
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}*/
+            			
             		}
             	});
-            	
+              return true;
             }
-            
-            
+
             callbackContext.error(TAG + ": INVALID ACTION");
             return false;
         } catch(Exception e) {
@@ -164,6 +170,7 @@ public class VideoPlayer extends CordovaPlugin {
 	  //Plugin Method Overrides
 	    @Override
 	    public void onPause(boolean multitasking) {
+	    	cordova.getActivity().finish();
 	        super.onPause(multitasking);
 	    }
 	
@@ -175,6 +182,7 @@ public class VideoPlayer extends CordovaPlugin {
 	    @Override
 	    public void onDestroy() {
 	        super.onDestroy();
+	        android.os.Process.killProcess(android.os.Process.myPid());
 	    }
 
 	    private void removeMediaListener() {

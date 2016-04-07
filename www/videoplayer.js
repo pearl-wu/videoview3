@@ -2,27 +2,23 @@ var exec = require("cordova/exec");
 
 module.exports = {
 
-    PLAY_OPTIONS: {
-        widthV: 200,
-		heightV: 200,
-		Top: 300,
-		Left: 300
+    DEFAULT_OPTIONS: {
+        volume: 1.0,
+        scalingMode: 1
     },
 
-    PREVIEW_OPTIONS: {
-        isStreaming: false,
-		bgColor: "#FFFFFF",
-		bgImage: "<SWEET_BACKGROUND_IMAGE>",
-		bgImageScale: "fit"
+    SCALING_MODE: {
+        SCALE_TO_FIT: 1,
+        SCALE_TO_FIT_WITH_CROPPING: 2
     },
 
     play: function (path, options, successCallback, errorCallback) {
-        options = this.merge(this.PLAY_OPTIONS, options);
+        options = this.merge(this.DEFAULT_OPTIONS, options);
         exec(successCallback, errorCallback, "VideoPlayer", "play", [path, options]);
     },
     
     preview: function(path, options, successCallback, errorCallback){
-        options = this.merge(this.PREVIEW_OPTIONS, options); 
+        options = this.merge(this.DEFAULT_OPTIONS, options); 
         exec(successCallback, errorCallback, "VideoPlayer", "preview", [path, options]);
     },
 

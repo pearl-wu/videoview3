@@ -3,8 +3,10 @@ var exec = require("cordova/exec");
 module.exports = {
 
     DEFAULT_OPTIONS: {
-        volume: 1.0,
-        scalingMode: 1
+        width: 1028,
+        height: 760,
+        top: 0,
+        left: 0,
     },
 
     SCALING_MODE: {

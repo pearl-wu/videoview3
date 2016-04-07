@@ -12,7 +12,7 @@
     <license>GPL3</license>
 
     <js-module name="backgroundvideo" src="www/backgroundvideo.js">
-        <clobbers target="cordova.plugins.backgroundvideo" />
+        <clobbers target="backgroundvideo" />
     </js-module>
 
     <platform name="android">

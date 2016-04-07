@@ -24,8 +24,8 @@ module.exports = {
         exec(successCallback, errorCallback, "VideoPlayer", "preview", [path, options]);
     },
 
-    close: function (successCallback, errorCallback) {
-        exec(successCallback, errorCallback, "VideoPlayer", "close", []);
+    stop: function (successCallback, errorCallback) {
+        exec(successCallback, errorCallback, "VideoPlayer", "stop", []);
     },
 
     merge: function () {

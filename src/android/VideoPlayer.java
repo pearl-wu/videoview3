@@ -122,12 +122,12 @@ public class VideoPlayer extends CordovaPlugin {
             	cordova.getActivity().runOnUiThread(new Runnable() {
             		@Override
             		public void run(){
-            			try {
+            			/*try {
 							playVideo(FILE_NAME, options);
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
-						}
+						}*/
             		}
             	});
             	
@@ -186,9 +186,9 @@ public class VideoPlayer extends CordovaPlugin {
 				}
 			}*/
 		}
-		private void updateMediaInfo(Intent mediaIntent) {
+		/*private void updateMediaInfo(Intent mediaIntent) {
 			sendUpdate(this.getMediaInfo(mediaIntent), true);
-		}
+		}*/
 
 		private void sendUpdate(JSONObject info, boolean keepCallback) {
 			/*if (callbackContext != null) {
@@ -198,7 +198,7 @@ public class VideoPlayer extends CordovaPlugin {
 			}*/
 		}
 
-		private JSONObject getMediaInfo(Intent mediaIntent) {
+		/*private JSONObject getMediaInfo(Intent mediaIntent) {
 			JSONObject obj = new JSONObject();
 			try {
 				obj.put("action", mediaIntent.getStringExtra("action"));
@@ -210,18 +210,18 @@ public class VideoPlayer extends CordovaPlugin {
 				Log.e(TAG, e.getMessage(), e);
 			}
 			return obj;
-		}
+		}*/
 
-		private boolean playAudio(String url, JSONObject options) throws JSONException {
+		/*private boolean playAudio(String url, JSONObject options) throws JSONException {
 			options.put("type", "audio");
 			return play(VitamioMedia.class, url, options);
 		}
 		private boolean playVideo(String url, JSONObject options) throws JSONException {
 			options.put("type", "video");
 			return play(VitamioMedia.class, url, options);
-		}
+		}*/
 
-		private boolean play(final Class activityClass, final String url, final JSONObject options) {
+		/*private boolean play(final Class activityClass, final String url, final JSONObject options) {
 			final CordovaInterface cordovaObj = cordova;
 			final CordovaPlugin plugin = this;
 
@@ -308,6 +308,6 @@ public class VideoPlayer extends CordovaPlugin {
 					//this.callbackContext.error(obj);
 				}
 			}
-		}
+		}*/
 
 }

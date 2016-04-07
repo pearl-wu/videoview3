@@ -24,7 +24,7 @@ import com.hutchind.cordova.plugins.vitamio.VitamioMedia;
 
 public class VideoPlayer extends CordovaPlugin {
 
-	private static final String TAG = "BACKGROUND_VIDEO";
+    private static final String TAG = "BACKGROUND_VIDEO";
     private static final String ACTION_START_RECORDING = "start";
     private static final String ACTION_STOP_RECORDING = "stop";
     private static final String ACTION_PLAY_RECORDING = "play";

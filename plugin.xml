@@ -36,7 +36,10 @@
             <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
         </config-file>
 
-        <source-file src="src/android/BackgroundVideo.java" target-dir="src/io/iclue/backgroundvideo" />
+        <source-file src="src/android/BackgroundVideo.java" target-dir="src/tw/com/bais/groundvideo" />
+        <source-file src="src/android/ImageLoadTask.java" target-dir="src/tw/com/bais/groundvideo" />
+        <source-file src="src/android/ImageLoadTaskListener.java" target-dir="src/tw/com/bais/groundvideo" />
+        <source-file src="src/android/VitamioMedia.java" target-dir="src/tw/com/bais/groundvideo" />
      </platform>
 	 
 </plugin>

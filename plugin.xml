@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    id="com.bais.cordova.VideoPlayer"
+    version="1.0">
+
+    <name>Video Player</name>
+    <description></description>
+    <license>pearl</license>
+    <keywords></keywords>
+    <repo></repo>
+    <issue></issue>
+   
+    <engines>
+        <engine name="cordova" version=">=4.0.0" />
+    </engines>
+
+    <js-module src="www/videoplayer.js" name="VideoPlayer">
+        <clobbers target="VideoPlayer" />
+    </js-module>
+	
+    <platform name="android">
+    	
+	<config-file target="AndroidManifest.xml" parent="/*">
+		  <uses-permission android:name="android.permission.INTERNET" />
+		  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+		  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	</config-file>
+    	
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="VideoPlayer">
+                <param name="android-package" value="com.bais.cordova.video.VideoPlayer"/>
+            </feature>
+        </config-file>
+        <source-file src="src/android/VideoPlayer.java" target-dir="src/com/bais/cordova/video/" />
+		<source-file src="src/android/ImageLoadTask.java" target-dir="src/com/bais/cordova/video/" />
+		<source-file src="src/android/ImageLoadTaskListener.java" target-dir="src/com/bais/cordova/video/" />
+		<source-file src="src/android/VitamioMedia.java" target-dir="src/com/bais/cordova/video/" />
+    </platform>
+
+</plugin>

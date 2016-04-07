@@ -54,10 +54,10 @@ public class VideoPlayer extends CordovaPlugin {
                 FILE_NAME = args.getString(0);
                 options = args.getJSONObject(1);
                 
-                final int widthV =  options.getInt("videoWidth");
-                final int heightV =  options.getInt("videoHeight");
-                final int TOP =  options.getInt("videoXx");
-                final int LEFT =  options.getInt("videoYy");
+                final int widthV =  options.getInt("widthV");
+                final int heightV =  options.getInt("heightV");
+                final int TOP =  options.getInt("topV");
+                final int LEFT =  options.getInt("leftV");
                
                     //Get screen dimensions
                     cordova.getActivity().runOnUiThread(new Runnable() {

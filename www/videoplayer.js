@@ -6,7 +6,7 @@ module.exports = {
         widthV: 1028,
         heightV: 760,
         topV: 0,
-        leftV: 0,
+        leftV: 0
     },
     
     play: function (path, options, successCallback, errorCallback) {

@@ -33,9 +33,9 @@
             </feature>
         </config-file>
 		
-		<config-file target="AndroidManifest.xml" parent="/manifest/application">
+	<config-file target="AndroidManifest.xml" parent="/manifest/application">
 			<activity 	android:configChanges="orientation|screenSize"
-						android:name="com.bais.cordova.video.VitamioMedia"
+						android:name="com.hutchind.cordova.plugins.vitamio.VitamioMedia"
 						android:label="Vitamio Media" />
 			 <activity
 				android:name="io.vov.vitamio.activity.InitActivity"

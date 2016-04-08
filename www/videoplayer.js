@@ -18,10 +18,10 @@ module.exports = {
         exec(successCallback, errorCallback, "VideoPlayer", "play", []);
     },
     
-    preview: function (path, options, successCallback, errorCallback){
-        options = options || {};
-        exec(successCallback, errorCallback, "Vitamio", "playVideo", [path, options]);
-       // exec(successCallback, errorCallback, "VideoPlayer", "preview", []);
+    preview: function (path, successCallback, errorCallback){
+        //options = options || {};
+       // exec(successCallback, errorCallback, "Vitamio", "playVideo", [path, options]);
+        exec(successCallback, errorCallback, "VideoPlayer", "preview", []);
     },
 
     stop: function (successCallback, errorCallback) {

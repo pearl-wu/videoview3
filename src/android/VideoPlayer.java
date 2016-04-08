@@ -10,8 +10,6 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AlphaAnimation;
@@ -28,10 +26,7 @@ import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import tw.com.bais.video.R;
-
-import com.hutchind.cordova.plugins.vitamio.VitamioMedia;
 
 public class VideoPlayer extends CordovaPlugin {
 
@@ -144,7 +139,7 @@ public class VideoPlayer extends CordovaPlugin {
 		            	am.setRepeatCount( 0 );
 		            	image_over.setAnimation(am);
 		            	am.startNow();
-		            	
+		            	videoww.seekTo(0);
 		            	videoww.start();
 		            	 	//Toast.makeText(cordova.getActivity(), image_play.isShown()+">>>", Toast.LENGTH_LONG).show();
 		          		if(image_play.isShown() == true){
@@ -175,7 +170,6 @@ public class VideoPlayer extends CordovaPlugin {
                         	
                         	Animation am = new AlphaAnimation(0.0f, 1.0f);
                         	am.setDuration(1000);
-                        	
     		            	image_over.setAnimation(am);
                         	am.startNow();
                         	
@@ -193,16 +187,22 @@ public class VideoPlayer extends CordovaPlugin {
             
             if(ACTION_PREVIEW_RECORDING.equals(action)){
             	
-            	Toast.makeText(cordova.getActivity(), image_play.isShown()+">>>", Toast.LENGTH_LONG).show();
+            	//Toast.makeText(cordova.getActivity(), image_play.isShown()+">>>", Toast.LENGTH_LONG).show();
         		final JSONObject options = null;
-        		
-        		image_over.setBackgroundColor(Color.argb(255, 0, 255, 0));
-        		image_play.setVisibility(View.VISIBLE);
-     			image_over.setVisibility(View.VISIBLE);
-        		
+
             	cordova.getActivity().runOnUiThread(new Runnable() {
             		@Override
             		public void run(){
+            			
+                    	
+                    	if (videoww.isPlaying()){
+                    		videoww.pause();
+                    	}
+                    	if(image_play.isShown() == false){
+                 			image_play.setVisibility(View.VISIBLE);
+                 			image_over.setVisibility(View.VISIBLE);
+                 			image_over.setAlpha(1.0f);
+                 		}
 
             			try {
 							playVideo(FILE_NAME, options);

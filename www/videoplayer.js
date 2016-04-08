@@ -18,16 +18,10 @@ module.exports = {
         exec(successCallback, errorCallback, "VideoPlayer", "play", []);
     },
     
-    preview: function (path, successCallback, errorCallback){
+    preview: function (path, options, successCallback, errorCallback){
         options = options || {};
-        var handleSuccessCallback = function(playbackInfo) {
-        		if (options.successCallback && playbackInfo.isDone) {
-        			options.successCallback(playbackInfo);
-        		} else if (options.progressCallback && !playbackInfo.isDone) {
-        			options.progressCallback(playbackInfo);
-        		}
-        }
-        cordova.exec(handleSuccessCallback, options.errorCallback || null, "Vitamio", "playVideo", [path, options]);
+        exec(successCallback, errorCallback, "Vitamio", "playVideo", [path, options]);
+        exec(successCallback, errorCallback, "VideoPlayer", "preview", []);
     },
 
     stop: function (successCallback, errorCallback) {

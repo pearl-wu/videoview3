@@ -102,6 +102,8 @@
 		<source-file src="src/android/res/drawable/scrubber_progress_horizontal_holo_dark.xml" target-dir="res/drawable" />
 		<source-file src="src/android/res/drawable/scrubber_secondary_holo.9.png" target-dir="res/drawable" />
 		<source-file src="src/android/res/drawable/scrubber_track_holo_dark.9.png" target-dir="res/drawable" />
+		<source-file src="src/android/res/drawable/image_box.png" target-dir="res/drawable" />
+		<source-file src="src/android/res/drawable/image_over.png" target-dir="res/drawable" />
 		<info>
 			<![CDATA[
 			You may need to make the following changes yourself. These files also exist in the GitHub repo at src/android/res/values/

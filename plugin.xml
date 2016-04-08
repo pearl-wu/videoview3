@@ -83,9 +83,7 @@
 			<string name="mediacontroller_play_pause">Play/Pause</string>
 		</config-file>
 		<source-file src="src/android/VideoPlayer.java" target-dir="src/com/bais/cordova/video/" />
-		<source-file src="src/android/VitamioMedia.java" target-dir="src/com/bais/cordova/video/" />
-		<source-file src="src/android/ImageLoadTask.java" target-dir="src/com/bais/cordova/video/" />
-		<source-file src="src/android/ImageLoadTaskListener.java" target-dir="src/com/bais/cordova/video/" />
+		<source-file src="src/android/VitamioMedia.jar" target-dir="libs" />
 		<source-file src="src/android/libs/vitamio.jar" target-dir="libs" />
 		<source-file src="src/android/libs/armeabi/libvinit.so" target-dir="libs/armeabi" />
 		<source-file src="src/android/libs/armeabi-v7a/libvinit.so" target-dir="libs/armeabi-v7a" />

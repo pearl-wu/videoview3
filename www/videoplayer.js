@@ -19,7 +19,15 @@ module.exports = {
     },
     
     preview: function (path, successCallback, errorCallback){
-        exec(successCallback, errorCallback, "VideoPlayer", "preview", [path]);
+        options = options || {};
+        var handleSuccessCallback = function(playbackInfo) {
+        		if (options.successCallback && playbackInfo.isDone) {
+        			options.successCallback(playbackInfo);
+        		} else if (options.progressCallback && !playbackInfo.isDone) {
+        			options.progressCallback(playbackInfo);
+        		}
+        }
+        cordova.exec(handleSuccessCallback, options.errorCallback || null, "Vitamio", "playVideo", [path, options]);
     },
 
     stop: function (successCallback, errorCallback) {

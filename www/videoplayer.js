@@ -21,7 +21,7 @@ module.exports = {
     preview: function (path, options, successCallback, errorCallback){
         options = options || {};
         exec(successCallback, errorCallback, "Vitamio", "playVideo", [path, options]);
-        exec(successCallback, errorCallback, "VideoPlayer", "preview", []);
+       // exec(successCallback, errorCallback, "VideoPlayer", "preview", []);
     },
 
     stop: function (successCallback, errorCallback) {

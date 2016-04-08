@@ -5,14 +5,20 @@ import java.util.Iterator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.VideoView;
 import org.apache.cordova.CallbackContext;
@@ -38,8 +44,9 @@ public class VideoPlayer extends CordovaPlugin {
     private String FILE_PATH = "";
     private String FILE_NAME = "";
     private VideoView videoww;
-    private static final int ACTIVITY_CODE_PLAY_MEDIA = 7;
-    JSONObject options = null;     
+    private static final int ACTIVITY_CODE_PLAY_MEDIA = 7;  
+    private ImageView image_play;
+    private ImageView image_over;
 
     @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
@@ -58,7 +65,7 @@ public class VideoPlayer extends CordovaPlugin {
             if(ACTION_START_RECORDING.equals(action)){
             	
                 FILE_NAME = args.getString(0);
-                options = args.getJSONObject(1);
+                JSONObject options = args.getJSONObject(1);
                 
                 final int widthV =  options.getInt("widthV");
                 final int heightV =  options.getInt("heightV");
@@ -71,9 +78,8 @@ public class VideoPlayer extends CordovaPlugin {
                         @SuppressLint("RtlHardcoded")
                         @Override
                         public void run() {     
+                        
                             
-                            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(widthV,heightV);  
-                            params.setMargins(TOP, LEFT, 0, 0);
                             
                             try {
                             	
@@ -81,12 +87,43 @@ public class VideoPlayer extends CordovaPlugin {
                                  videoww.setVideoURI(Uri.parse(getNextFileName()));
                                  videoww.requestFocus();
                                    //Toast.makeText(cordova.getActivity(), videoww.isShown()+">>>", Toast.LENGTH_LONG).show();
-                                 cordova.getActivity().addContentView(videoww, params);
                                  
-	                             //ImageView image = new ImageView(cordova.getActivity());
-	                             //image.setImageDrawable(cordova.getActivity().getResources().getDrawable(R.drawable.image));
-	                             //cordova.getActivity().addContentView(image, params);
-
+                                 RelativeLayout main = new RelativeLayout(cordova.getActivity());
+                                 main.setBackgroundColor(Color.argb(0, 255, 0, 0));
+                                 RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+                                 main.setLayoutParams(p);
+                                 main.addView(videoww);                                 
+                                 
+                                 image_over = new ImageView(cordova.getActivity());
+                                 image_over.setImageDrawable(cordova.getActivity().getResources().getDrawable(R.drawable.image_over));
+	                             RelativeLayout.LayoutParams p_over = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+	                             p_over.addRule(RelativeLayout.CENTER_VERTICAL);
+	                             p_over.addRule(RelativeLayout.CENTER_HORIZONTAL);
+	                             image_over.setLayoutParams(p_over);
+	                             image_over.setDrawingCacheEnabled(true);
+	                             main.addView(image_over);                                
+                                 
+                                 
+                                 image_play = new ImageView(cordova.getActivity());
+	                             image_play.setImageDrawable(cordova.getActivity().getResources().getDrawable(R.drawable.ic_media_play));
+	                             RelativeLayout.LayoutParams p_play = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+	                             p_play.addRule(RelativeLayout.CENTER_VERTICAL);
+	                             p_play.addRule(RelativeLayout.CENTER_HORIZONTAL);
+	                             image_play.setLayoutParams(p_play);
+	                             image_play.setDrawingCacheEnabled(true);
+	                             main.addView(image_play);
+	                             
+	                             ImageView image_box = new ImageView(cordova.getActivity());
+	                             image_box.setImageDrawable(cordova.getActivity().getResources().getDrawable(R.drawable.image_box));
+	                             
+	                             
+	                             FrameLayout.LayoutParams p_main = new FrameLayout.LayoutParams(widthV-15,heightV-15);  
+	                             p_main.setMargins(LEFT+10, TOP+5, 0, 0);
+	                             cordova.getActivity().addContentView(main, p_main);
+	                             
+	                             FrameLayout.LayoutParams p_box = new FrameLayout.LayoutParams(widthV,heightV);  
+	                             p_box.setMargins(LEFT, TOP, 0, 0);
+	                             cordova.getActivity().addContentView(image_box, p_box);
                             } catch(Exception e) {
                                 Log.e(TAG, "Error during preview create", e);
                                 callbackContext.error(TAG + ": " + e.getMessage());
@@ -98,12 +135,30 @@ public class VideoPlayer extends CordovaPlugin {
             
             if(ACTION_PLAY_RECORDING.equals(action)){
             	
-            	 videoww.start();
+            	cordova.getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+            	
+		            	Animation am = new AlphaAnimation(1.0f, 0.0f);
+		            	am.setDuration(1000);
+		            	am.setRepeatCount( 0 );
+		            	image_over.setAnimation(am);
+		            	am.startNow();
+		            	
+		            	videoww.start();
+		            	 	//Toast.makeText(cordova.getActivity(), image_play.isShown()+">>>", Toast.LENGTH_LONG).show();
+		          		if(image_play.isShown() == true){
+		          			image_play.setVisibility(View.INVISIBLE);
+		          			image_over.setVisibility(View.INVISIBLE);
+		          		}
+                    }
+                });
+          		
     			 videoww.setOnCompletionListener(new MediaPlayer.OnCompletionListener()
                  {
                  	@Override
                       public void onCompletion(MediaPlayer mp)
-                      {
+                      {                 		
                      	 videoww.start();
                       }
                  });           	
@@ -113,28 +168,48 @@ public class VideoPlayer extends CordovaPlugin {
             
 
             if(ACTION_STOP_RECORDING.equals(action)) {
+            	          	
                     cordova.getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                        	
+                        	Animation am = new AlphaAnimation(0.0f, 1.0f);
+                        	am.setDuration(1000);
+                        	
+    		            	image_over.setAnimation(am);
+                        	am.startNow();
+                        	
                         	if (videoww.isPlaying()){
                         		videoww.pause();
                         	}
+                        	if(image_play.isShown() == false){
+                     			image_play.setVisibility(View.VISIBLE);
+                     			image_over.setVisibility(View.VISIBLE);
+                     		}
                         }
                     });
                 return true;
             }
             
             if(ACTION_PREVIEW_RECORDING.equals(action)){
+            	
+            	Toast.makeText(cordova.getActivity(), image_play.isShown()+">>>", Toast.LENGTH_LONG).show();
+        		final JSONObject options = null;
+        		
+        		image_over.setBackgroundColor(Color.argb(255, 0, 255, 0));
+        		image_play.setVisibility(View.VISIBLE);
+     			image_over.setVisibility(View.VISIBLE);
+        		
             	cordova.getActivity().runOnUiThread(new Runnable() {
             		@Override
             		public void run(){
-            			
-            			/*try {
+
+            			try {
 							playVideo(FILE_NAME, options);
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
-						}*/
+						}
             			
             		}
             	});
@@ -195,9 +270,9 @@ public class VideoPlayer extends CordovaPlugin {
 				}
 			}*/
 		}
-		/*private void updateMediaInfo(Intent mediaIntent) {
+		private void updateMediaInfo(Intent mediaIntent) {
 			sendUpdate(this.getMediaInfo(mediaIntent), true);
-		}*/
+		}
 
 		private void sendUpdate(JSONObject info, boolean keepCallback) {
 			/*if (callbackContext != null) {
@@ -207,7 +282,7 @@ public class VideoPlayer extends CordovaPlugin {
 			}*/
 		}
 
-		/*private JSONObject getMediaInfo(Intent mediaIntent) {
+		private JSONObject getMediaInfo(Intent mediaIntent) {
 			JSONObject obj = new JSONObject();
 			try {
 				obj.put("action", mediaIntent.getStringExtra("action"));
@@ -219,18 +294,18 @@ public class VideoPlayer extends CordovaPlugin {
 				Log.e(TAG, e.getMessage(), e);
 			}
 			return obj;
-		}*/
+		}
 
-		/*private boolean playAudio(String url, JSONObject options) throws JSONException {
+		private boolean playAudio(String url, JSONObject options) throws JSONException {
 			options.put("type", "audio");
 			return play(VitamioMedia.class, url, options);
 		}
 		private boolean playVideo(String url, JSONObject options) throws JSONException {
 			options.put("type", "video");
 			return play(VitamioMedia.class, url, options);
-		}*/
+		}
 
-		/*private boolean play(final Class activityClass, final String url, final JSONObject options) {
+		private boolean play(final Class activityClass, final String url, final JSONObject options) {
 			final CordovaInterface cordovaObj = cordova;
 			final CordovaPlugin plugin = this;
 
@@ -317,6 +392,6 @@ public class VideoPlayer extends CordovaPlugin {
 					//this.callbackContext.error(obj);
 				}
 			}
-		}*/
+		}
 
 }

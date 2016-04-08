@@ -100,7 +100,7 @@ public class VideoPlayer extends CordovaPlugin {
                                  
                                  
                                  image_play = new ImageView(cordova.getActivity());
-	                             image_play.setImageDrawable(cordova.getActivity().getResources().getDrawable(R.drawable.ic_media_play));
+	                             image_play.setImageDrawable(cordova.getActivity().getResources().getDrawable(R.drawable.image_play));
 	                             RelativeLayout.LayoutParams p_play = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 	                             p_play.addRule(RelativeLayout.CENTER_VERTICAL);
 	                             p_play.addRule(RelativeLayout.CENTER_HORIZONTAL);
@@ -203,14 +203,7 @@ public class VideoPlayer extends CordovaPlugin {
                  			image_over.setVisibility(View.VISIBLE);
                  			image_over.setAlpha(1.0f);
                  		}
-
-            			try {
-							playVideo(FILE_NAME, options);
-						} catch (JSONException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-            			
+          			
             		}
             	});
               return true;
@@ -259,139 +252,4 @@ public class VideoPlayer extends CordovaPlugin {
 	        super.onDestroy();
 	        android.os.Process.killProcess(android.os.Process.myPid());
 	    }
-
-	    private void removeMediaListener() {
-			/*if (this.receiver != null) {
-				try {
-					this.cordova.getActivity().unregisterReceiver(this.receiver);
-					this.receiver = null;
-				} catch (Exception e) {
-					Log.e(TAG, "Error unregistering media receiver: " + e.getMessage(), e);
-				}
-			}*/
-		}
-		private void updateMediaInfo(Intent mediaIntent) {
-			sendUpdate(this.getMediaInfo(mediaIntent), true);
-		}
-
-		private void sendUpdate(JSONObject info, boolean keepCallback) {
-			/*if (callbackContext != null) {
-				PluginResult result = new PluginResult(PluginResult.Status.OK, info);
-				result.setKeepCallback(keepCallback);
-				callbackContext.sendPluginResult(result);
-			}*/
-		}
-
-		private JSONObject getMediaInfo(Intent mediaIntent) {
-			JSONObject obj = new JSONObject();
-			try {
-				obj.put("action", mediaIntent.getStringExtra("action"));
-				if (mediaIntent.hasExtra("pos")) {
-					obj.put("pos", getTimeString(mediaIntent.getIntExtra("pos", -1)));
-				}
-				obj.put("isDone", false);
-			} catch (JSONException e) {
-				Log.e(TAG, e.getMessage(), e);
-			}
-			return obj;
-		}
-
-		private boolean playAudio(String url, JSONObject options) throws JSONException {
-			options.put("type", "audio");
-			return play(VitamioMedia.class, url, options);
-		}
-		private boolean playVideo(String url, JSONObject options) throws JSONException {
-			options.put("type", "video");
-			return play(VitamioMedia.class, url, options);
-		}
-
-		private boolean play(final Class activityClass, final String url, final JSONObject options) {
-			final CordovaInterface cordovaObj = cordova;
-			final CordovaPlugin plugin = this;
-
-			cordova.getActivity().runOnUiThread(new Runnable() {
-				public void run() {
-					final Intent streamIntent = new Intent(cordovaObj.getActivity().getApplicationContext(), activityClass);
-					Bundle extras = new Bundle();
-					extras.putString("mediaUrl", url);
-
-					if (options != null) {
-						Iterator<String> optKeys = options.keys();
-						while (optKeys.hasNext()) {
-							try {
-								final String optKey = (String)optKeys.next();
-								if (options.get(optKey).getClass().equals(String.class)) {
-									extras.putString(optKey, (String)options.get(optKey));
-									Log.v(TAG, "Added option: " + optKey + " -> " + String.valueOf(options.get(optKey)));
-								} else if (options.get(optKey).getClass().equals(Boolean.class)) {
-									extras.putBoolean(optKey, (Boolean)options.get(optKey));
-									Log.v(TAG, "Added option: " + optKey + " -> " + String.valueOf(options.get(optKey)));
-								}
-
-							} catch (JSONException e) {
-								Log.e(TAG, "JSONException while trying to read options. Skipping option.");
-							}
-						}
-						streamIntent.putExtras(extras);
-					}
-
-					cordovaObj.startActivityForResult(plugin, streamIntent, ACTIVITY_CODE_PLAY_MEDIA);
-				}
-			});
-			return true;
-		}
-
-		private String getTimeString(int millis) {
-			if (millis == -1)
-				return "00:00:00";
-			StringBuffer buf = new StringBuffer();
-
-			int hours = (int) (millis / (1000 * 60 * 60));
-			int minutes = (int) ((millis % (1000 * 60 * 60)) / (1000 * 60));
-			int seconds = (int) (((millis % (1000 * 60 * 60)) % (1000 * 60)) / 1000);
-
-			buf
-				.append(String.format("%02d", hours))
-				.append(":")
-				.append(String.format("%02d", minutes))
-				.append(":")
-				.append(String.format("%02d", seconds));
-
-			return buf.toString();
-		}
-
-		public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-			Log.v(TAG, "onActivityResult: " + requestCode + " " + resultCode);
-			super.onActivityResult(requestCode, resultCode, intent);
-			if (ACTIVITY_CODE_PLAY_MEDIA == requestCode) {
-				JSONObject obj = new JSONObject();
-				if (Activity.RESULT_OK == resultCode) {
-					try {
-						obj.put("isDone", true);
-						if (intent.hasExtra("pos")) {
-							obj.put("pos", getTimeString(intent.getIntExtra("pos", -1)));
-						}
-					} catch (JSONException e) {
-						Log.e(TAG, e.getMessage(), e);
-					}
-					//this.callbackContext.success(obj);
-				} else if (Activity.RESULT_CANCELED == resultCode) {
-					String errMsg = "Error";
-					try {
-						if (intent != null) {
-							if (intent.hasExtra("message")) {
-								obj.put("message", intent.getStringExtra("message"));
-							}
-							if (intent.hasExtra("pos")) {
-								obj.put("pos", getTimeString(intent.getIntExtra("pos", -1)));
-							}
-						}
-					} catch (JSONException e) {
-						Log.e(TAG, e.getMessage(), e);
-					}
-					//this.callbackContext.error(obj);
-				}
-			}
-		}
-
 }

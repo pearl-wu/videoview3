@@ -19,7 +19,7 @@ module.exports = {
     },
     
     preview: function (path, successCallback, errorCallback){
-        exec(successCallback, errorCallback, "VideoPlayer", "preview", []);
+        exec(successCallback, errorCallback, "VideoPlayer", "preview", [path]);
     },
 
     stop: function (successCallback, errorCallback) {

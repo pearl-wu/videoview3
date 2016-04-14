@@ -2,7 +2,7 @@ var exec = require("cordova/exec");
 
 module.exports = {
 
-    DEFAULT_OPTIONS: {
+    _OPTIONS: {
         widthV: 1028,
         heightV: 760,
         topV: 0,
@@ -10,7 +10,7 @@ module.exports = {
     },
     
     beginning: function (options, successCallback, errorCallback) {
-      options = this.merge(this.DEFAULT_OPTIONS, options);  
+      options = this.merge(this._OPTIONS, options);  
         exec(successCallback, errorCallback, "VideoPlayer", "start", [options]);
     },
     

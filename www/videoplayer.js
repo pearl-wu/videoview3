@@ -9,17 +9,17 @@ module.exports = {
         leftV: 0
     },
     
-    start: function (options, successCallback, errorCallback) {
+    beginning: function (options, successCallback, errorCallback) {
       options = this.merge(this.DEFAULT_OPTIONS, options);  
         exec(successCallback, errorCallback, "VideoPlayer", "start", [options]);
     },
     
-    play: function (path, successCallback, errorCallback) {
-        exec(successCallback, errorCallback, "VideoPlayer", "play", [path]);
+    many_play: function (paths, number, successCallback, errorCallback){
+        exec(successCallback, errorCallback, "VideoPlayer", "preview", [paths, number]);
     },
     
-    preview: function (path, successCallback, errorCallback){
-        exec(successCallback, errorCallback, "VideoPlayer", "preview", [path]);
+    play: function (path, successCallback, errorCallback) {
+        exec(successCallback, errorCallback, "VideoPlayer", "play", [path]);
     },
 
     stop: function (successCallback, errorCallback) {
@@ -35,5 +35,4 @@ module.exports = {
         });
         return obj;
     }
-
 };

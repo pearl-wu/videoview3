@@ -1,61 +1,38 @@
 package com.bais.cordova.video;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.SurfaceHolder;
-import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.MediaController;
-import android.widget.MediaController.MediaPlayerControl;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-import android.widget.VideoView;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaArgs;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
-import org.apache.cordova.CordovaWebView;
-import org.apache.cordova.PluginResult;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.hutchind.cordova.plugins.vitamio.VitamioMedia;
-
-import tw.com.bais.video.MainActivity;
 import tw.com.bais.video.R;
 
 public class VideoPlayer extends CordovaPlugin{
 
     private static final String TAG = "BACKGROUND_VIDEO";
+    private static final String ACTION_START_RECORDING = "beginning";
+    private static final String ACTION_MANY_RECORDING = "many_play"; 
     private static final String ACTION_PLAY_RECORDING = "play";
-    private static final String ACTION_START_RECORDING = "start";
     private static final String ACTION_STOP_RECORDING = "stop";
-    private static final String ACTION_PREVIEW_RECORDING = "preview"; 
     private static final int ACTIVITY_CODE_PLAY_MEDIA = 7;
     private String FILE_NAME = "";
     private RelativeLayout main;
@@ -157,11 +134,11 @@ public class VideoPlayer extends CordovaPlugin{
                 return true;
             }
             
-            if(ACTION_PREVIEW_RECORDING.equals(action)){
+            if(ACTION_MANY_RECORDING.equals(action)){
             	
-            	FILE_NAME = args.getString(0);
-            	//final JSONObject video_names = args.getJSONObject(0);
-            	
+            	final JSONObject video_names = args.getJSONObject(0);
+            	FILE_NAME = args.getString(1);
+            	            	
             	cordova.getActivity().runOnUiThread(new Runnable() {
             		@Override
             		public void run(){

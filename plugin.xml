@@ -35,6 +35,7 @@
             </feature>
         </config-file>
 		<source-file src="src/android/VideoPlayer.java" target-dir="src/com/bais/cordova/video/" />
+		<source-file src="src/android/videocontroller.java" target-dir="src/com/bais/cordova/video/" />
 		<source-file src="src/android/res/drawable/image_box.png" target-dir="res/drawable" />
 		<source-file src="src/android/res/drawable/image_over.png" target-dir="res/drawable" />
 		<source-file src="src/android/res/drawable/image_play.png" target-dir="res/drawable" />

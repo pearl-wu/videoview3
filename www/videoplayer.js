@@ -13,10 +13,7 @@ module.exports = {
       options = this.merge(this._OPTIONS, options);  
         exec(successCallback, errorCallback, "VideoPlayer", "start", [options]);
     },
-    
-    many_play: function (paths, number, successCallback, errorCallback){
-        exec(successCallback, errorCallback, "VideoPlayer", "preview", [paths, number]);
-    },
+
     
     play: function (path, successCallback, errorCallback) {
         exec(successCallback, errorCallback, "VideoPlayer", "play", [path]);

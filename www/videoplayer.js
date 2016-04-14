@@ -15,6 +15,7 @@ module.exports = {
     },
     
     many_play: function (paths, number, successCallback, errorCallback) {
+       
         exec(successCallback, errorCallback, "VideoPlayer", "many_play", [paths, number]);
     },
 

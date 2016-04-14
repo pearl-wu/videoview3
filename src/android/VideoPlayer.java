@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.util.Iterator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.AudioManager;
@@ -14,17 +17,21 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
+import android.widget.MediaController.MediaPlayerControl;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -39,6 +46,7 @@ import org.json.JSONObject;
 
 import com.hutchind.cordova.plugins.vitamio.VitamioMedia;
 
+import tw.com.bais.video.MainActivity;
 import tw.com.bais.video.R;
 
 public class VideoPlayer extends CordovaPlugin{
@@ -47,25 +55,17 @@ public class VideoPlayer extends CordovaPlugin{
     private static final String ACTION_PLAY_RECORDING = "play";
     private static final String ACTION_START_RECORDING = "start";
     private static final String ACTION_STOP_RECORDING = "stop";
-    private static final String ACTION_PREVIEW_RECORDING = "preview";    
-    private static final String FILE_EXTENSION = ".mp4";
-    private String FILE_PATH = "";
+    private static final String ACTION_PREVIEW_RECORDING = "preview"; 
+    private static final int ACTIVITY_CODE_PLAY_MEDIA = 7;
     private String FILE_NAME = "";
-    private VideoView videoww; 
     private RelativeLayout main;
     private ImageView image_play;
     private ImageView image_over;
     private SurfaceView surfaceview;
     private SurfaceHolder mHandler;
     private MediaPlayer Mplayer;
-
-    @Override
-    public void initialize(CordovaInterface cordova, CordovaWebView webView) {
-        super.initialize(cordova, webView);
-        FILE_PATH = cordova.getActivity().getFilesDir().toString() + "/";
-    }
     
- 
+
     @SuppressLint("RtlHardcoded") 
     public boolean execute(String action, CordovaArgs args, final CallbackContext callbackContext) throws JSONException {
     	
@@ -100,9 +100,19 @@ public class VideoPlayer extends CordovaPlugin{
                     public void run() {
 
 		          		try {
+		          			
 		          			if(image_play.isShown()){
 		          				viewstart();
 		          			}
+		          			
+			            	Animation am = new AlphaAnimation(1.0f, 0.0f);
+			            	am.setDuration(1000);
+			            	am.setRepeatCount( 0 );
+			            	image_over.setAnimation(am);
+			            	am.startNow();
+			          		image_play.setVisibility(View.INVISIBLE);
+			          		image_over.setVisibility(View.INVISIBLE);
+		          			
 						} catch (IllegalArgumentException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -117,13 +127,6 @@ public class VideoPlayer extends CordovaPlugin{
 							e.printStackTrace();
 						}
                     	
-		            	Animation am = new AlphaAnimation(1.0f, 0.0f);
-		            	am.setDuration(1000);
-		            	am.setRepeatCount( 0 );
-		            	image_over.setAnimation(am);
-		            	am.startNow();
-		          		image_play.setVisibility(View.INVISIBLE);
-		          		image_over.setVisibility(View.INVISIBLE);
                     }
                 });
 
@@ -146,9 +149,8 @@ public class VideoPlayer extends CordovaPlugin{
                      			image_play.setVisibility(View.VISIBLE);
                      			image_over.setVisibility(View.VISIBLE);
                      		}
-                        	
-                    		main.removeView(surfaceview);
-                    		Mplayer.release();
+                        	main.removeView(surfaceview);
+                        	Mplayer.release();
 
                         }
                     });
@@ -156,18 +158,23 @@ public class VideoPlayer extends CordovaPlugin{
             }
             
             if(ACTION_PREVIEW_RECORDING.equals(action)){
-            	//Toast.makeText(cordova.getActivity(), image_play.isShown()+">>>", Toast.LENGTH_LONG).show();
+            	
+            	FILE_NAME = args.getString(0);
+            	//final JSONObject video_names = args.getJSONObject(0);
+            	
             	cordova.getActivity().runOnUiThread(new Runnable() {
             		@Override
             		public void run(){
-                    	if (Mplayer.isPlaying()){
+            			
+            			if(image_play.isShown() == false){
+            				main.removeView(surfaceview);
                     		Mplayer.release();
-                    	}
-                    	if(image_play.isShown() == false){
-                 			image_play.setVisibility(View.VISIBLE);
+                			image_play.setVisibility(View.VISIBLE);
                  			image_over.setVisibility(View.VISIBLE);
                  			image_over.setAlpha(1.0f);
-                 		}
+            			}	
+            			
+            			play(videocontroller.class, FILE_NAME, null);
             		}
             	});
               return true;
@@ -182,22 +189,6 @@ public class VideoPlayer extends CordovaPlugin{
         }
     }
 
-    public static String stripFileProtocol(String uriString) {
-        if (uriString.startsWith("file://")) {
-            return Uri.parse(uriString).getPath();
-        }
-        return uriString;
-    }
-    
-    private String getNextFileName(){
-        int i=1;
-        String tmpFileName = FILE_NAME;
-        while(new File(FILE_PATH + tmpFileName + FILE_EXTENSION).exists()) {
-            tmpFileName = FILE_NAME + '_' + i;
-            i++;
-        }
-        return tmpFileName;
-    }
 
 	public void startplay(JSONObject option) throws JSONException{
     	
@@ -243,12 +234,15 @@ public class VideoPlayer extends CordovaPlugin{
     }
     
     private void viewstart() throws IllegalArgumentException, SecurityException, IllegalStateException, IOException {
+
+    	/*videoww = new VideoView(cordova.getActivity());
+    	videoww.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+        videoww.setVideoURI(Uri.parse(getNextFileName()));
+        videoww.requestFocus();
+        main.addView(videoww);
+        Toast.makeText(cordova.getActivity(), videoww.isShown()+">>>", Toast.LENGTH_LONG).show();
+        videoww.start();*/
     	
-    	//videoww = new VideoView(cordova.getActivity());
-    	//videoww.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-        //videoww.setVideoURI(Uri.parse(getNextFileName()));
-        //videoww.requestFocus();
-        //Toast.makeText(cordova.getActivity(), videoww.isShown()+">>>", Toast.LENGTH_LONG).show();
     	
         surfaceview = new SurfaceView(cordova.getActivity());
         mHandler = surfaceview.getHolder();
@@ -256,19 +250,10 @@ public class VideoPlayer extends CordovaPlugin{
         surfaceview.setLayoutParams(Hpl);
         mHandler.setFixedSize(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         mHandler.setKeepScreenOn(true);
-        surfaceview.setDrawingCacheEnabled(true);
-        main.addView(surfaceview);
-    	
-    	
-        /* surfaceview = new SurfaceView(cordova.getActivity());
-        mHandler = surfaceview.getHolder();
-        mHandler.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-        mHandler.setFixedSize(widthV, heightV);
-        mHandler.setKeepScreenOn(true);
-        main.addView(surfaceview); */ 
-        Toast.makeText(cordova.getActivity(), "viewstart", Toast.LENGTH_LONG).show();
+        surfaceview.setDrawingCacheEnabled(true);   	
+        main.addView(surfaceview);  
         Mplayer = new MediaPlayer();      
-        Mplayer.setDataSource(getNextFileName());
+        Mplayer.setDataSource(FILE_NAME);
 		Mplayer.prepare();
 
         // mHandler = videoww.getHolder();
@@ -289,85 +274,51 @@ public class VideoPlayer extends CordovaPlugin{
          	@Override
               public void onCompletion(MediaPlayer mp)
               {                 		
-             	//videoww.start();
-         		Mplayer.start();
+         		 Mplayer.start();
               }
          }); 
     	
     }
     
+    private void play(final Class activityClass, final String url, final JSONObject options){
+    	final CordovaInterface cordovaObj = cordova;
+    	final CordovaPlugin plugin = this;
 
-    
-    private boolean play(final String url, final JSONObject options) throws IllegalArgumentException, SecurityException, IllegalStateException, IOException{
-		final CordovaInterface cordovaObj = cordova;
-		final CordovaPlugin plugin = this;
-		
-	    final MediaPlayer mMediaPlayer;
-	    MediaController mMediaController = null;
-	    SurfaceView mMediaView;
-	    SurfaceHolder holder;
-
-	    RelativeLayout relLayout = new RelativeLayout(cordova.getActivity());
-		RelativeLayout.LayoutParams relLayoutParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-        relLayoutParam.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-        mMediaView = new SurfaceView(cordova.getActivity());
-        mMediaView.setLayoutParams(relLayoutParam);
-        relLayout.addView(mMediaView);
-		
-		
-		mMediaPlayer = new MediaPlayer();
-        mMediaController = new MediaController(cordova.getActivity(), true);
-       /* mMediaController.setMediaPlayer(cordova.getActivity());
-        mMediaPlayer.setOnBufferingUpdateListener(cordova.getActivity());
-        mMediaPlayer.setOnCompletionListener(cordova.getActivity());
-        mMediaPlayer.setOnErrorListener(cordova.getActivity());
-        mMediaPlayer.setOnPreparedListener(cordova.getActivity());
-        mMediaPlayer.setOnVideoSizeChangedListener(cordova.getActivity());*/
-
-        mMediaController.setAnchorView(relLayout);
-        mMediaController.setEnabled(true);
-        
-        mMediaPlayer.setDataSource(getNextFileName());
-        mMediaPlayer.prepare();
-        
-        holder = mMediaView.getHolder();
-        
-        holder.addCallback(new SurfaceHolder.Callback() {
-            @Override
-            public void surfaceCreated(SurfaceHolder holder) {   
-           	 //Toast.makeText(cordova.getActivity(), "surface", Toast.LENGTH_LONG).show();
-            	mMediaPlayer.setDisplay(holder);  
-            	mMediaPlayer.start();
-            }
-            @Override
-            public void surfaceDestroyed(SurfaceHolder holder) {
-           	 Mplayer.release();
-            }
-            @Override
-            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {}
-        });
-
-		return true;
+    	cordova.getActivity().runOnUiThread(new Runnable() {
+			public void run() {
+				
+				Toast.makeText(cordova.getActivity(), "play play", Toast.LENGTH_SHORT).show();
+				final Intent streamIntent = new Intent(cordovaObj.getActivity().getApplicationContext(), activityClass);
+				Bundle extras = new Bundle();
+				extras.putString("mediaUrl", url);
+				streamIntent.putExtras(extras);
+				
+				cordovaObj.startActivityForResult(plugin, streamIntent, ACTIVITY_CODE_PLAY_MEDIA);
+			}
+		});				
 	}
 
 
 	  //Plugin Method Overrides
+
 	    @Override
 	    public void onPause(boolean multitasking) {
-	    	Mplayer.release();
-	    	cordova.getActivity().finish();
-	        super.onPause(multitasking);
+	    	 //super.onPause(true);
+	    		//Mplayer.release();
+		    	//cordova.getActivity().finish();	
 	    }
+	    
+	    public void onRestart(){}
 	
 	    @Override
 	    public void onResume(boolean multitasking) {
-	        super.onResume(multitasking);
+	        //super.onResume(true);
 	    }
 	
 	    @Override
 	    public void onDestroy() {
-	        Mplayer.release();
-	        android.os.Process.killProcess(android.os.Process.myPid());
-	        super.onDestroy();
+	    	//super.onDestroy();
+	    	///Mplayer.release();
+	 	   // android.os.Process.killProcess(android.os.Process.myPid());
 	    }
 }

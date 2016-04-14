@@ -139,6 +139,8 @@ public class VideoPlayer extends CordovaPlugin{
             	final JSONObject video_names = args.getJSONObject(0);
             	FILE_NAME = args.getString(1);
             	            	
+            	Toast.makeText(cordova.getActivity(), video_names.toString(), Toast.LENGTH_SHORT).show();
+            	
             	cordova.getActivity().runOnUiThread(new Runnable() {
             		@Override
             		public void run(){

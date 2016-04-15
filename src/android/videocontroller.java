@@ -1,6 +1,5 @@
 package com.bais.cordova.video;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import android.app.Activity;
@@ -42,9 +41,8 @@ public class videocontroller extends Activity{
 		FrameLayout frelLayout = new FrameLayout(this);
 		    
 		videoww = new VideoView(this);
-		RelativeLayout.LayoutParams videowwLayoutParam = new RelativeLayout.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
-		videowwLayoutParam.addRule(RelativeLayout.CENTER_VERTICAL,RelativeLayout.TRUE);
-		videowwLayoutParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT,RelativeLayout.TRUE);
+		RelativeLayout.LayoutParams videowwLayoutParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		videowwLayoutParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 		videoww.setLayoutParams(videowwLayoutParam);		
 		frelLayout.addView(videoww);
 
@@ -57,9 +55,7 @@ public class videocontroller extends Activity{
 	       videoww.setDrawingCacheEnabled(true); 
 	       videoww.start();       
 	       
-	       RelativeLayout.LayoutParams frelLayoutLayoutParam = new RelativeLayout.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
-	       frelLayoutLayoutParam.addRule(RelativeLayout.CENTER_VERTICAL,RelativeLayout.TRUE);
-	       frelLayoutLayoutParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT,RelativeLayout.TRUE);
+	       RelativeLayout.LayoutParams frelLayoutLayoutParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
 	       this.addContentView(frelLayout, frelLayoutLayoutParam);	
        
        

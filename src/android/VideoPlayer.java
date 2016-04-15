@@ -45,6 +45,7 @@ public class VideoPlayer extends CordovaPlugin{
     private SurfaceView surfaceview;
     private SurfaceHolder mHandler;
     private MediaPlayer Mplayer;
+    private int Vclose = 0;
     
 
     @SuppressLint("RtlHardcoded") 
@@ -63,6 +64,7 @@ public class VideoPlayer extends CordovaPlugin{
                         public void run() {  
                             try {
                             	startplay(options);
+                            	Vclose = 1;
                             } catch(Exception e) {
                                 Log.e(TAG, "Error during preview create", e);
                                 callbackContext.error(TAG + ": " + e.getMessage());
@@ -88,13 +90,13 @@ public class VideoPlayer extends CordovaPlugin{
                     	
 		          		try {
 
-		          			if(image_play.isShown()){
+		          			if(Vclose == 1){
 		          				viewstart();
+				          		image_play.setVisibility(View.INVISIBLE);
+				          		//image_over.setVisibility(View.INVISIBLE);
+				          		Vclose = 2;
 		          			}
-		          			
-			          		image_play.setVisibility(View.INVISIBLE);
-			          		//image_over.setVisibility(View.INVISIBLE);
-		          			
+
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -113,7 +115,7 @@ public class VideoPlayer extends CordovaPlugin{
                         @Override
                         public void run() {
                         	
-                        	if(image_play.isShown() == false){
+                        	if(Vclose == 2){
                         		
                             	Animation am = new AlphaAnimation(0.0f, 1.0f);
                             	am.setDuration(1000);
@@ -124,6 +126,7 @@ public class VideoPlayer extends CordovaPlugin{
                      			image_over.setVisibility(View.VISIBLE);
                             	main.removeView(surfaceview);
                             	Mplayer.release();
+                            	Vclose = 1;
                      		}
                         }
                     });
@@ -141,12 +144,13 @@ public class VideoPlayer extends CordovaPlugin{
             		@Override
             		public void run(){
             			
-            			if(image_play.isShown() == false){
+            			if(Vclose == 2){
             				main.removeView(surfaceview);
                     		Mplayer.release();
                 			image_play.setVisibility(View.VISIBLE);
                  			image_over.setVisibility(View.VISIBLE);
                  			image_over.setAlpha(1.0f);
+                 			Vclose = 1;
             			}	
             			
             			play(videocontroller.class, NUMBER, video_names);
@@ -262,7 +266,7 @@ public class VideoPlayer extends CordovaPlugin{
     	cordova.getActivity().runOnUiThread(new Runnable() {
 			public void run() {
 				
-				Toast.makeText(cordova.getActivity(), "play play", Toast.LENGTH_SHORT).show();
+				//Toast.makeText(cordova.getActivity(), "play play", Toast.LENGTH_SHORT).show();
 				final Intent streamIntent = new Intent(cordovaObj.getActivity().getApplicationContext(), activityClass);
 				
 				ArrayList<String> listdata = new ArrayList<String>();     
@@ -296,7 +300,7 @@ public class VideoPlayer extends CordovaPlugin{
 	    @Override
 	    public void onPause(boolean multitasking) {
 	    	super.onPause(false);
-	    	if(image_play.isShown() == false){
+	    	if(Vclose == 2){
 	    		Mplayer.release();
 		    	cordova.getActivity().finish();	
 	    	}
@@ -312,7 +316,7 @@ public class VideoPlayer extends CordovaPlugin{
 	    @Override
 	    public void onDestroy() {
 	    	super.onDestroy();
-	    	if(image_play.isShown() == false){
+	    	if(Vclose == 2){
 		    	Mplayer.release();
 		    	android.os.Process.killProcess(android.os.Process.myPid());
 	    	}

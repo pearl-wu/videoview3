@@ -154,6 +154,7 @@ public class VideoPlayer extends CordovaPlugin{
             			}	
             			
             			play(videocontroller.class, NUMBER, video_names);
+            			//play(VideoPlayerActivity.class, NUMBER, video_names);
             		}
             	});
               return true;

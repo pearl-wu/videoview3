@@ -7,6 +7,9 @@ import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.View.OnKeyListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
@@ -64,7 +67,7 @@ public class videocontroller extends Activity{
 	       	@Override
 	            public void onCompletion(MediaPlayer mp){
 	            
-	            Toast.makeText(getBaseContext(), totle+">>>"+mediaurls.get(totle), Toast.LENGTH_SHORT).show();
+	           // Toast.makeText(getBaseContext(), totle+">>>"+mediaurls.get(totle), Toast.LENGTH_SHORT).show();
 						if(number==2)
 						{
 			       		videoww.setVideoURI(Uri.parse(mediaurls.get(totle)));
@@ -86,7 +89,24 @@ public class videocontroller extends Activity{
            }
        });
        
-
+      /* videoww.setOnKeyListener(new OnKeyListener(){
+    	   @Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				// TODO Auto-generated method stub
+		        return true;
+			}
+       });*/
+      
 	}
-
+	public boolean dispatchKeyEvent (KeyEvent event) {
+		if (event.getKeyCode() == KeyEvent.KEYCODE_DPAD_LEFT
+		|| event.getKeyCode() == KeyEvent.KEYCODE_DPAD_UP 
+		|| event.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT 
+		|| event.getKeyCode() == KeyEvent.KEYCODE_DPAD_DOWN)
+		{ 
+			//Toast.makeText(getBaseContext(), "dispatchKeyEvent", Toast.LENGTH_SHORT).show();
+			return true; 
+		} 
+		return super.dispatchKeyEvent(event);
+	}
 }

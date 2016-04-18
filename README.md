@@ -14,7 +14,7 @@
 			"http://video.ebais.com.tw:8088/fileman/media/IHV6099/trdir/m000000125312800720",
 			"http://video.ebais.com.tw:8088/fileman/media/IHV6099/trdir/m000000125112800720",
 			"http://video.ebais.com.tw:8088/fileman/media/IHV6099/trdir/m000000125012800720"
-	);
+		);
 	VideoPlayer.many_play(objs,2);
 ### options
         

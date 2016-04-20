@@ -214,16 +214,6 @@ public class VideoPlayer extends CordovaPlugin{
     }
     
     private void viewstart() throws IllegalArgumentException, SecurityException, IllegalStateException, IOException {
-
-    	/*videoww = new VideoView(cordova.getActivity());
-    	videoww.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-        videoww.setVideoURI(Uri.parse(getNextFileName()));
-        videoww.requestFocus();
-        main.addView(videoww);
-        Toast.makeText(cordova.getActivity(), videoww.isShown()+">>>", Toast.LENGTH_LONG).show();
-        videoww.start();*/
-    	
-    	
         surfaceview = new SurfaceView(cordova.getActivity());
         mHandler = surfaceview.getHolder();
         RelativeLayout.LayoutParams Hpl = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);

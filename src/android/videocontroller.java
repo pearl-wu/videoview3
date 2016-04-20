@@ -49,7 +49,7 @@ public class videocontroller extends Activity{
 		videoww.setLayoutParams(videowwLayoutParam);		
 		frelLayout.addView(videoww);
 
-		   mMediaController = new MediaController(this);
+	       mMediaController = new MediaController(this);
 	       videoww.setMediaController(mMediaController);
 	       videoww.setVideoURI(Uri.parse(mediaurls.get(totle)));
 	       		if(number == 2) totle++;

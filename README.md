@@ -21,9 +21,11 @@
 			2	// 2:輪播
 		);
 ### many_play video (單一影片一次播)
-
+		var objs = new Array(
+			"http://video.ebais.com.tw:8088/fileman/media/MOL7178/trdir/m000000107207200480"
+		);
 		VideoPlayer.many_play(
-			"http://video.ebais.com.tw:8088/fileman/media/MOL7178/trdir/m000000107207200480",
+			objs,
 			1	// 1:只播一次
 		);
         

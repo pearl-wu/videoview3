@@ -26,8 +26,7 @@ import org.apache.cordova.CordovaPlugin;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import tw.com.bais.video.R;
+import cn.com.ebais.kyytvali.R;
 
 public class VideoPlayer extends CordovaPlugin{
 
@@ -62,13 +61,13 @@ public class VideoPlayer extends CordovaPlugin{
                         @SuppressLint("RtlHardcoded")
                         @Override
                         public void run() {  
-                            try {
+                            /*try {
                             	startplay(options);
                             	Vclose = 1;
                             } catch(Exception e) {
                                 Log.e(TAG, "Error during preview create", e);
                                 callbackContext.error(TAG + ": " + e.getMessage());
-                            }
+                            }*/
                         }
                     });
                 return true;
@@ -172,7 +171,7 @@ public class VideoPlayer extends CordovaPlugin{
 
 	public void startplay(JSONObject option) throws JSONException{
     	
-        int widthV =  option.getInt("widthV");
+       /* int widthV =  option.getInt("widthV");
         int heightV =  option.getInt("heightV");
         int TOP =  option.getInt("topV");
         int LEFT =  option.getInt("leftV");
@@ -209,7 +208,7 @@ public class VideoPlayer extends CordovaPlugin{
 
          FrameLayout.LayoutParams p_box = new FrameLayout.LayoutParams(widthV,heightV);  
          p_box.setMargins(LEFT, TOP, 0, 0);
-         cordova.getActivity().addContentView(image_box, p_box);
+         cordova.getActivity().addContentView(image_box, p_box);*/
 
     }
     

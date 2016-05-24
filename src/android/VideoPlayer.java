@@ -56,9 +56,6 @@ public class VideoPlayer extends CordovaPlugin{
             		@Override
             		public void run(){
             			if(Vclose == 2){
-                			image_play.setVisibility(View.VISIBLE);
-                 			image_over.setVisibility(View.VISIBLE);
-                 			image_over.setAlpha(1.0f);
                  			Vclose = 1;
             			}	
             			

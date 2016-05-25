@@ -72,8 +72,6 @@ public class videocontroller extends Activity{
 		videowwLayoutParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 		loading.setLayoutParams(loadingLayoutParam);
 		frelLayout.addView(loading);
-
-		Toast.makeText(getBaseContext(), displaymetrics.widthPixels+"--"+displaymetrics.heightPixels, Toast.LENGTH_SHORT).show();
 		
 	       mMediaController = new MediaController(this);
 	       videoww.setMediaController(mMediaController);

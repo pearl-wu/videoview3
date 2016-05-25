@@ -57,8 +57,6 @@ public class videocontroller extends Activity{
 		getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
 
 		FrameLayout frelLayout = new FrameLayout(this);
-		RelativeLayout.LayoutParams FrameLayoutLayoutParam = new RelativeLayout.LayoutParams(displaymetrics.widthPixels, displaymetrics.heightPixels);
-		frelLayout.setLayoutParams(FrameLayoutLayoutParam);
 		
 		videoww = new VideoView(this);
 		RelativeLayout.LayoutParams videowwLayoutParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);

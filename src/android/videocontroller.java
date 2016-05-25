@@ -32,6 +32,7 @@ public class videocontroller extends Activity{
 	@SuppressLint("InlinedApi") public void onCreate(Bundle icicle) {
 
 		super.onCreate(icicle);
+		
 		int currentOrientation = getResources().getConfiguration().orientation;	
 		switch(currentOrientation) {
 		      case Configuration.ORIENTATION_PORTRAIT:
@@ -40,30 +41,37 @@ public class videocontroller extends Activity{
 		        //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		       break;
 		}
-		
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+	requestWindowFeature(Window.FEATURE_NO_TITLE);
+	getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         extras = getIntent().getExtras();
         number = extras.getInt("medianumber");
         mediaurls = extras.getStringArrayList("mediaUrl");        
-        //Toast.makeText(getBaseContext(), mediaurls.size()+">>>", Toast.LENGTH_SHORT).show();
-        
+
+    	DisplayMetrics displaymetrics = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+
 		FrameLayout frelLayout = new FrameLayout(this);
+		RelativeLayout.LayoutParams FrameLayoutLayoutParam = new RelativeLayout.LayoutParams(displaymetrics.widthPixels, displaymetrics.heightPixels);
+		frelLayout.setLayoutParams(FrameLayoutLayoutParam);
+		
 		videoww = new VideoView(this);
-		RelativeLayout.LayoutParams videowwLayoutParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		RelativeLayout.LayoutParams videowwLayoutParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
 		videowwLayoutParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 		videoww.setLayoutParams(videowwLayoutParam);		
-		frelLayout.addView(videoww);
+		frelLayout.addView(videoww);	
 		
 		final ImageView loading = new ImageView(this);
 		loading.setImageDrawable(this.getResources().getDrawable((R.drawable.loading)));
-		RelativeLayout.LayoutParams loadingLayoutParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		RelativeLayout.LayoutParams loadingLayoutParam = new RelativeLayout.LayoutParams(displaymetrics.widthPixels, 1452);
 		videowwLayoutParam.addRule(RelativeLayout.CENTER_IN_PARENT);
 		loading.setLayoutParams(loadingLayoutParam);
 		frelLayout.addView(loading);
 
+		Toast.makeText(getBaseContext(), displaymetrics.widthPixels+"--"+displaymetrics.heightPixels, Toast.LENGTH_SHORT).show();
+		
 	       mMediaController = new MediaController(this);
 	       videoww.setMediaController(mMediaController);
 	       videoww.setVideoURI(Uri.parse(mediaurls.get(totle)));
@@ -81,10 +89,12 @@ public class videocontroller extends Activity{
        {
 	       	@Override
 	            public void onCompletion(MediaPlayer mp){
+	       		videoww.setVisibility(View.INVISIBLE);
 	       		loading.setVisibility(View.VISIBLE);
-	           // Toast.makeText(getBaseContext(), totle+">>>"+mediaurls.get(totle), Toast.LENGTH_SHORT).show();
+	       			//Toast.makeText(getBaseContext(), totle+">>>"+mediaurls.get(totle), Toast.LENGTH_SHORT).show();
 						if(number==2)
 						{						
+						videoww.setVisibility(View.VISIBLE); 
 			       		videoww.setVideoURI(Uri.parse(mediaurls.get(totle)));
 			       			if(totle+1 == mediaurls.size()){
 			       				totle = 0;
@@ -100,8 +110,9 @@ public class videocontroller extends Activity{
        videoww.setOnPreparedListener(new OnPreparedListener() {
            @Override
            public void onPrepared(MediaPlayer mp) {
-        	   loading.setVisibility(View.INVISIBLE);
-        	   videoww.start();           
+        	   loading.setVisibility(View.INVISIBLE);  
+        	   videoww.start();  
+        	        
            }
        });
        

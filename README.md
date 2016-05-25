@@ -6,15 +6,11 @@
 ### many_play video (多影片輪播)
 
         var objs = new Array(
-			"http://video.ebais.com.tw:8088/fileman/media/MOL7178/trdir/m000000107207200480",
-			"http://video.ebais.com.tw:8088/fileman/media/IHV6099/trdir/m000000125312800720",
-			"http://video.ebais.com.tw:8088/fileman/media/IHV6099/trdir/m000000125112800720",
-			"http://video.ebais.com.tw:8088/fileman/media/IHV6099/trdir/m000000125012800720",
-			"http://video.ebais.com.tw:8088/fileman/media/MOL7178/trdir/m000000107207200480",
-			"http://video.ebais.com.tw:8088/fileman/media/IHV6099/trdir/m000000125312800720",
-			"http://video.ebais.com.tw:8088/fileman/media/IHV6099/trdir/m000000125112800720",
-			"http://video.ebais.com.tw:8088/fileman/media/IHV6099/trdir/m000000125012800720"
-		);
+		"http://xxx.xxx.xxx.xxx/xxx.mp4",
+		"http://xxx.xxx.xxx.xxx/xxx.mp4",
+		"http://xxx.xxx.xxx.xxx/xxx.mp4",
+		"http://xxx.xxx.xxx.xxx/xxx.mp4"
+	);
 		
 		VideoPlayer.many_play(
 			objs,	//影片列表
@@ -22,7 +18,7 @@
 		);
 ### many_play video (單一影片一次播)
 		var objs = new Array(
-			"http://video.ebais.com.tw:8088/fileman/media/MOL7178/trdir/m000000107207200480"
+			"http://xx.xx.xx.xx/xxx.mp4"
 		);
 		VideoPlayer.many_play(
 			objs,

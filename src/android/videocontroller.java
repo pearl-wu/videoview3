@@ -44,7 +44,7 @@ public class videocontroller extends Activity{
 		
 		
 		if(isNetworkConnected(this) == false){
-			Toast.makeText(getBaseContext(), "连线中断，请检查网路。", Toast.LENGTH_SHORT).show();		
+			Toast.makeText(getBaseContext(), "连线中断，请检查网路。", Toast.LENGTH_LONG).show();		
 			this.finish();
 			return;
 		}
@@ -131,7 +131,7 @@ public class videocontroller extends Activity{
 		@Override
 		public boolean onError(MediaPlayer mp, int what, int extra) {
 			finish();	
-			Toast.makeText(getBaseContext(), "连线中断，请重新点选课程。", Toast.LENGTH_SHORT).show();
+			Toast.makeText(getBaseContext(), "连线中断，请重新点选课程。", Toast.LENGTH_LONG).show();
 			return false;
 		}    	   
        });

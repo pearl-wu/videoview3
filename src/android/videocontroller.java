@@ -67,7 +67,7 @@ public class videocontroller extends Activity{
 		final ImageView loading = new ImageView(this);
 		loading.setImageDrawable(this.getResources().getDrawable((R.drawable.loading)));
 		RelativeLayout.LayoutParams loadingLayoutParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-		videowwLayoutParam.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+		loadingLayoutParam.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 		loading.setLayoutParams(loadingLayoutParam);
 		frelLayout.addView(loading);
 		

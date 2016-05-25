@@ -91,7 +91,6 @@ public class videocontroller extends Activity{
 	       mMediaController.setMediaPlayer(videoww);
 	       videoww.requestFocus();
 	       videoww.setDrawingCacheEnabled(true); 
-	       videoww.start(); 
 	       RelativeLayout.LayoutParams frelLayoutLayoutParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
 	       this.addContentView(frelLayout, frelLayoutLayoutParam);	
 	       

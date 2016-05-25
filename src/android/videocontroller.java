@@ -130,12 +130,10 @@ public class videocontroller extends Activity{
        videoww.setOnErrorListener(new OnErrorListener(){
 		@Override
 		public boolean onError(MediaPlayer mp, int what, int extra) {
-			// TODO Auto-generated method stub
-			Toast.makeText(getBaseContext(), "连线中断，请重新点选课程。", Toast.LENGTH_SHORT).show();	
-			finish();
+			finish();	
+			Toast.makeText(getBaseContext(), "连线中断，请重新点选课程。", Toast.LENGTH_SHORT).show();
 			return false;
-		}
-    	   
+		}    	   
        });
 
       /* videoww.setOnKeyListener(new OnKeyListener(){

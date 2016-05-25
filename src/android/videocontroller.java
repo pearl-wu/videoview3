@@ -32,6 +32,14 @@ public class videocontroller extends Activity{
 	@SuppressLint("InlinedApi") public void onCreate(Bundle icicle) {
 
 		super.onCreate(icicle);
+		int currentOrientation = getResources().getConfiguration().orientation;	
+		switch(currentOrientation) {
+		      case Configuration.ORIENTATION_PORTRAIT:
+		    	// 旋轉為直立顯示
+		    	setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+		        //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		       break;
+		}
 		
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
